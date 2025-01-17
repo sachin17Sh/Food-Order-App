@@ -1,5 +1,6 @@
 import "../../assets/CSS/Header.css"
 import logo from "../../assets/logo.jpg"
+import Button from "../button/Button"
 
 export default function Header() {
   return (
@@ -9,7 +10,7 @@ export default function Header() {
             <h1 >Order Food</h1>
         </div>
         <div>
-            <button>Cart (0)</button>
+            <Button textOnly> Cart(0)</Button>
         </div>
     </header>
   )
