@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialProgressState = {
     cartIsVisible: false,  
-    checkOutIsVisible: false
+    checkOutIsVisible: false,
+    successIsVisible: false,
+    clearCheckOutData: false
 };
 
 const ProgressSlice = createSlice({
@@ -20,6 +22,15 @@ const ProgressSlice = createSlice({
         },
         hideCheckOut(state){
             state.checkOutIsVisible = false;
+        },
+        showSuccess(state) {
+            state.successIsVisible = true;
+        },
+        hideSuccess(state) {
+            state.successIsVisible = false;
+        },
+        clearCheckOut(state){
+            state.clearCheckOutData
         }
     }
 });

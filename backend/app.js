@@ -24,9 +24,7 @@ app.post('/orders', async (req, res) => {
   const orderData = req.body.order;
 
   if (orderData === null || orderData.items === null || orderData.items.length === 0) {
-    return res
-      .status(400)
-      .json({ message: 'Missing data.' });
+    return res.status(400).json({ message: 'Missing data.' });
   }
 
   if (
@@ -42,8 +40,7 @@ app.post('/orders', async (req, res) => {
     orderData.customer.city.trim() === ''
   ) {
     return res.status(400).json({
-      message:
-        'Missing data: Email, name, street, postal code or city is missing.',
+      message: 'Missing data: Email, name, street, postal code or city is missing.',
     });
   }
 
@@ -51,12 +48,29 @@ app.post('/orders', async (req, res) => {
     ...orderData,
     id: (Math.random() * 1000).toString(),
   };
-  const orders = await fs.readFile('./data/orders.json', 'utf8');
-  const allOrders = JSON.parse(orders);
-  allOrders.push(newOrder);
-  await fs.writeFile('./data/orders.json', JSON.stringify(allOrders));
-  res.status(201).json({ message: 'Order created!' });
+
+  try {
+    const orders = await fs.readFile('./data/orders.json', 'utf8');
+
+    let allOrders = [];
+
+    // If the file is empty, start with an empty array.
+    if (orders.trim() !== '') {
+      allOrders = JSON.parse(orders);
+    }
+
+    allOrders.push(newOrder);
+
+    // Write the updated orders back to the file
+    await fs.writeFile('./data/orders.json', JSON.stringify(allOrders, null, 2));
+
+    res.status(201).json({ success: true, message: 'Order created!' });
+  } catch (error) {
+    console.error('Error saving the order:', error);
+    res.status(500).json({ success: false, message: 'Failed to create order' });
+  }
 });
+
 
 app.use((req, res) => {
   if (req.method === 'OPTIONS') {

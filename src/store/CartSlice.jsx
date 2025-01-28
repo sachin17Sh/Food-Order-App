@@ -24,7 +24,7 @@ const CartSlice  = createSlice({
                 })
             } else {
                 exitingItem.quantity++; 
-                exitingItem.price += newItem.price;
+             
             }
         },
         removeItemFromCart(state, action){
@@ -38,7 +38,12 @@ const CartSlice  = createSlice({
             } else{
                 exitingItem.quantity--;
             }
+        },
+        clearCart(state){
+            state.items = [],
+            state.quantity= 0
         }
+    
         
     }
 });
